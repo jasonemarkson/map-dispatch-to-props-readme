@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { addItem } from  './actions/items';
+// wasn't able to import this addItem -- this lab may be outdated
 import './App.css';
 
 class App extends Component {
 
   state = {
     todo: ''
+  }
+
+  handleOnClick = event => {
+    this.props.addItem()
   }
 
   handleOnChange = event => {
@@ -22,9 +28,14 @@ class App extends Component {
   }
 
   render() {
+    debugger;
     const renderTodos = () => this.props.todos.map(todo => <li key={todo}>{todo}</li>);
     return (
       <div className="App">
+        <button onClick={this.handleOnClick}>
+          Click
+          </button>
+        <p>{this.props.items.length}</p>
       <form onSubmit={(event) => this.handleOnSubmit(event)}>
         <input
           type="text"
@@ -47,4 +58,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => {
+  return {
+    addItem: () => {
+      dispatch(addItem())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
